@@ -13,4 +13,4 @@
 ###Interaction
 - [ ] Send + validate username
 - [ ] be able to access x,y user songs,artists
-- [ ] Be able to interact on a base level
+- [X] Be able to interact on a base level
