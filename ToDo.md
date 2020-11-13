@@ -1,9 +1,9 @@
 #GUI
-- [ ] Add functionality to save results to file
+- [X] Add functionality to save results to file
 - [ ] Set screen size when exiting out of full screen
 - [X] Function for username detection
   - [X] Hide error message after valid username is submitted
-- [ ] Create display for track results in respective frames
+- [ ] Create display for results in respective frames
 - [X] Normalize Color Scheme
 
 ##Spotify
