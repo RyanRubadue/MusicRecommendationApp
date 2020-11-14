@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk 
+from tkinter import ttk
 
 class mainPageFunctions:
     def unlockSongs(entry, var):
@@ -19,18 +19,18 @@ class IntEntry(tk.Entry):
 
     def check(self, *args):
         print(self.get())
-        if self.get().isdigit() and int(self.get()) < 11: 
+        if self.get().isdigit() and int(self.get()) < 11:
             # the current value is only digits; allow this
             self.old_value = self.get()
         else:
-            # there's non-digit characters in the input; reject this 
+            # there's non-digit characters in the input; reject this
             self.set(self.old_value)
-            
+
 class MusicApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        
+
         #Configuration of master window
         #self.title('Music Recommendation App')
         #self.configure(background = '#3BAD40')
@@ -59,27 +59,27 @@ class StartPage(tk.Frame):
 
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        
+
         #Variable Defintions
         checkVar3 = tk.IntVar() #Variable of whether show recommended songs is checked
         checkVar4 = tk.IntVar() #Variable of whether show recommended artists is checked
         bgFrame = tk.Frame(self, bg = '#067625')
         bgFrame.place(relx = 0, rely = 0, relheight = 1, relwidth = 1)
-        
+
         fullScreenButton = tk.Button(bgFrame, text = "fullscreen")
         exitButton = tk.Button(bgFrame, text = 'exit', command = lambda: root.destroy)
-        
+
         leftFrame = tk.Frame(bgFrame, bg = '#5ACC72', highlightbackground="#4F8451", highlightthickness=2)
         topFrame = tk.Frame(leftFrame, bg = '#5ACC72')
         bottomFrame = tk.Frame(leftFrame, bg = '#52F059', highlightbackground="#4F8451", highlightthickness=2)
 
-        
+
         titleLabel = tk.Label(topFrame, text = "A New Way to Discover Music",
                            fg ="#fcd8e9", font = ('Gadugi', 25, 'italic', 'bold'),
                            pady = 45, padx = 25, bg = '#5ACC72')
         titleLabel.grid(column = 0, row = 0, columnspan = 2, rowspan = 2, sticky = 'nw')
 
-        
+
         enterTextLabel = tk.Label(topFrame, text = "Enter Spotify Username:",
                                font = ('Segoe UI', 16, 'bold'), bg = '#5ACC72')
         enterTextLabel.grid(row = 2, column = 0)
@@ -107,14 +107,14 @@ class StartPage(tk.Frame):
         toDisplayCheckButton4 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4, command =lambda e=numArtistsEntry: mainPageFunctions.unlockSongs(e, checkVar4))
 
         startButton = tk.Button(bottomFrame, text = "Get Your Music!", font = ('Segoi UI', 24, 'bold'),
-                             fg = 'white', bg = '#3BAD40', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: controller.show_frame("ResultPage"))
+                             fg = 'white', bg = '#3BAD40', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: ResultPage.loadResults())
 
-        
+
         toDisplayCheckButton1.grid(row = 0, column = 0, sticky = 'w', padx = 15, pady = (20, 0), columnspan = 2)
         toDisplayCheckButton2.grid(row = 1, column = 0, sticky = 'w', padx = 15, columnspan = 2)
         toDisplayCheckButton3.grid(row = 2, column = 0, sticky = 'w', padx = 15, columnspan = 2)
         toDisplayCheckButton4.grid(row = 4, column = 0, sticky = 'w', padx = 15, columnspan = 2)
-        
+
         numSongsEntry.grid(row = 3, column = 0, padx = (50,0))
         numSongsLabel.grid(row = 3, column = 1, padx = 0, sticky = 'w')
         numArtistsEntry.grid(row = 5, column = 0, padx = (50,0))
@@ -128,7 +128,7 @@ class StartPage(tk.Frame):
 
 
 class ResultPage(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -138,11 +138,11 @@ class ResultPage(tk.Frame):
         neFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
         swFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
         seFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
-        
+
         mainLabel = tk.Label(self, text = "Aaaaaaand here you go!", bg = '#067625', font = ('Segoe UI', 32, 'bold'), fg = 'white')
         returnButton = tk.Button(self, text = 'Return to welcome page', command = lambda: controller.show_frame("StartPage"), bg = '#383F38', fg = "#75F993", font = ('Segoe UI', 12))
         exportButton = tk.Button(self, text = 'Export Results', bg = '#383F38', fg = "#75F993", font = ('Segoe UI', 12))
-        
+
         nwLabel = tk.Label(nwFrame, text = "Your Top Genres", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
         neLabel = tk.Label(neFrame, text = "Your Top Artists", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
         swLabel = tk.Label(swFrame, text = "Recommended Songs", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
@@ -161,7 +161,14 @@ class ResultPage(tk.Frame):
         mainLabel.place(relx = .35, rely = .02, relheight = .07, relwidth = .3)
         returnButton.place(relx = .735, rely = .03, relheight = .05, relwidth = .1)
         exportButton.place(relx = .85, rely = .03, relheight = .05, relwidth = .1)
-        
+
+    def loadResults():
+        resultList =
+        for idx, result in enumerate(resultList['items']):
+            track = item['track']
+            tempLabel = tk.Label(nwFrame, text = str(idx) + " " + track['artists'][0]['name'] + " " + track['name'])
+            tempLabel.grid(row = idx, column = 0, columnSpan = 4)
+        controller.show_frame("ResultPage")
 
 def main():
     root = MusicApp()

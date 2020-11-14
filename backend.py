@@ -10,10 +10,11 @@ scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth('fcade02a1b2b4585a7fc019836240782', '2ccf5da7375445519b60e1052d8fbfde',
                                                'http://localhost:8888/callback', scope=scope))
 
-results = sp.current_user_saved_tracks()
-for idx, item in enumerate(results['items']):
-    track = item['track']
-    print(idx, track['artists'][0]['name'], " – ", track['name'])
+#results = sp.current_user_saved_tracks()
+
+#for idx, item in enumerate(results['items']):
+#    track = item['track']
+#    print(idx,  , " – ", track['name'])
 
 
 def validateEntry(username):
@@ -22,3 +23,6 @@ def validateEntry(username):
 
 def getTextToSave():
     return "Hello this is a test :)"
+
+def getResults():
+    return sp.current_user_saved_tracks()

@@ -1,7 +1,7 @@
 from tkinter import filedialog
 import backend
 import tkinter as tk
-from tkinter import ttk 
+from tkinter import ttk
 
 ### Music Recommendation App - 2020
 ### Made by: Ryan Rubadue
@@ -22,8 +22,8 @@ class mainPageFunctions:
         f.write(textToSave)
         f.close()
 
-        
-#Inherits from the Entry widget class, but only allows for input of characters that can be numerically represented    
+
+#Inherits from the Entry widget class, but only allows for input of characters that can be numerically represented
 class IntEntry(tk.Entry):
 
     #Initialize IntEntry and call check function on value
@@ -37,14 +37,14 @@ class IntEntry(tk.Entry):
     #Ensure current entry value is valid in nature
     def check(self, *args):
         print(self.get())
-        if self.get().isdigit() and int(self.get()) > 0 and int(self.get()) < 11: 
+        if self.get().isdigit() and int(self.get()) > 0 and int(self.get()) < 11:
             # the current value is only digits; allow this
             self.old_value = self.get()
         else:
-            # there's non-digit characters in the input; reject this 
+            # there's non-digit characters in the input; reject this
             self.set(self.old_value)
 
-#High Level Creation of application page          
+#High Level Creation of application page
 class MusicApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -74,19 +74,19 @@ class MusicApp(tk.Tk):
 
 
 #Contains all initialization and fucntionalities of the start page the user initially sees upon launching application.
-#Inherits from tk.Frame class 
+#Inherits from tk.Frame class
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        
+
         #Variable Defintions
         checkVar3 = tk.IntVar() #Variable of whether show recommended songs is checked
         checkVar4 = tk.IntVar() #Variable of whether show recommended artists is checked
 
         #Define and set a frame for the background to display a desired background color across the entire page behind all other widgets
-        bgFrame = tk.Frame(self, bg = '#067625')
+        bgFrame = tk.Frame(self, bg = '#226333')
         bgFrame.place(relx = 0, rely = 0, relheight = 1, relwidth = 1)
 
         #This button serves to toggle fullscreen mode for the application
@@ -106,7 +106,7 @@ class StartPage(tk.Frame):
         titleLabel.grid(column = 0, row = 0, columnspan = 2, rowspan = 2, sticky = 'nw')
 
         validUsernameText = tk.Label(topFrame, text = "Invalid Username!", fg = 'red', bg = '#5ACC72', font =('Segoe UI', 22))
-        
+
         enterTextLabel = tk.Label(topFrame, text = "Enter Spotify Username:",
                                font = ('Segoe UI', 32, 'bold'), bg = '#5ACC72', fg = '#383F38')
         enterTextLabel.grid(row = 2, column = 0)
@@ -114,7 +114,7 @@ class StartPage(tk.Frame):
         usernameEntry = tk.Entry(topFrame, bg = 'white', fg = '#5ACC72', font =('Segoe UI', 28), width = 25)
         usernameEntry.grid(row = 2, column = 1, sticky = 'w', pady = 10)
 
-        self.musicNoteImage = tk.PhotoImage(file = r'C:\Users\M38853\Downloads\try1.png')
+        self.musicNoteImage = tk.PhotoImage(file = r'musicNoteImage.png')
         musicLabel = tk.Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
         musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (20, 0), padx = 20)
         #add top level frame to page
@@ -132,17 +132,17 @@ class StartPage(tk.Frame):
                                                 command =lambda e=numSongsEntry: mainPageFunctions.unlockSongs(e, checkVar3), font = ('Segoe UI', 18))
         toDisplayCheckButton4 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4,
                                                 command =lambda e=numArtistsEntry: mainPageFunctions.unlockSongs(e, checkVar4), font = ('Segoe UI', 18))
-        
-        #When clicked the start button checks that the user has entered a valid username and either display an error message or changes to the result page appropriately. 
+
+        #When clicked the start button checks that the user has entered a valid username and either display an error message or changes to the result page appropriately.
         startButton = tk.Button(bottomFrame, text = "Get Your Music!", font = ('Segoi UI', 48, 'bold'),
                              fg = '#75F993', bg = '#383F38', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: validateUsername(usernameEntry.get(), validUsernameText))
 
-        
+
         toDisplayCheckButton1.grid(row = 0, column = 0, sticky = 'w', padx = 30, pady = (40, 0), columnspan = 2)
         toDisplayCheckButton2.grid(row = 1, column = 0, sticky = 'w', padx = 30, columnspan = 2)
         toDisplayCheckButton3.grid(row = 2, column = 0, sticky = 'w', padx = 30, columnspan = 2)
         toDisplayCheckButton4.grid(row = 4, column = 0, sticky = 'w', padx = 30, columnspan = 2)
-        
+
         numSongsEntry.grid(row = 3, column = 0, padx = (100,0))
         numSongsLabel.grid(row = 3, column = 1, padx = 0, sticky = 'w')
         numArtistsEntry.grid(row = 5, column = 0, padx = (100,0))
@@ -156,32 +156,33 @@ class StartPage(tk.Frame):
         #add leftFrame to page
         leftFrame.pack(expand = True)
 
-        #Checks that the user inputted a valid username to the program. Takes in the user input and an error text widget to display in the case of invalid input. 
+        #Checks that the user inputted a valid username to the program. Takes in the user input and an error text widget to display in the case of invalid input.
         def validateUsername(username, errorText):
             #Check validity in backend module
             isValid = backend.validateEntry(username)
 
-            #Transition to results page and hide the error message in case the user previously entered bad input           
+            #Transition to results page and hide the error message in case the user previously entered bad input
             if isValid:
+                ResultPage.loadResults(parent)
                 controller.show_frame("ResultPage")
                 errorText.grid_forget()
 
             #Display error message
-            else: 
+            else:
                 errorText.grid(row = 3, column = 1, sticky = 'n', padx = (0, 90))
 
 
 #Contains all initialization and fucntionalities of the start page the user initially sees upon launching application.
-#Inherits from tk.Frame class 
+#Inherits from tk.Frame class
 class ResultPage(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        #bgFrame is the background for the whole page and displays an appropriate background color. 
-        bgFrame = tk.Frame(self, bg = '#067625')
-        
+        #bgFrame is the background for the whole page and displays an appropriate background color.
+        bgFrame = tk.Frame(self, bg = '#226333')
+
         #these four frames are children of the background frame and display categories of results found
         nwFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
         neFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
@@ -192,13 +193,13 @@ class ResultPage(tk.Frame):
         fullScreenButton = tk.Button(bgFrame, text = "fullscreen", command = lambda: root.attributes("-fullscreen", not root.attributes('-fullscreen')))
         #This button serves to provide a convenient way to exit the application
         exitButton = tk.Button(bgFrame, text = 'exit', command = lambda: root.destroy())
-        
+
         mainLabel = tk.Label(self, text = "Aaaaaaand here you go!", bg = '#067625', font = ('Segoe UI', 32, 'bold'), fg = 'white')
         #Button to return to the start page
         returnButton = tk.Button(self, text = 'Return to welcome page', command = lambda: controller.show_frame("StartPage"), bg = '#383F38', fg = "#75F993", font = ('Segoe UI', 12))
         #This button causes a dialog screen to appear for the user to save their generated results to a text file
         exportButton = tk.Button(self, text = 'Export Results', bg = '#383F38', fg = "#75F993", font = ('Segoe UI', 12), command = lambda: mainPageFunctions.exportToFile())
-        
+
         nwLabel = tk.Label(nwFrame, text = "Your Top Genres", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
         neLabel = tk.Label(neFrame, text = "Your Top Artists", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
         swLabel = tk.Label(swFrame, text = "Recommended Songs", bg = "#383F38", fg = "#75F993", font = ('Segoe UI', 16))
@@ -215,15 +216,25 @@ class ResultPage(tk.Frame):
         swFrame.place(relx = .05, rely = .55, relheight = .4, relwidth = .44)
         seFrame.place(relx = .51, rely = .55, relheight = .4, relwidth = .44)
         mainLabel.place(relx = .35, rely = .02, relheight = .07, relwidth = .3)
-        
+
         returnButton.place(relx = .705, rely = .03, relheight = .05, relwidth = .1)
         exportButton.place(relx = .82, rely = .03, relheight = .05, relwidth = .1)
         fullScreenButton.place(relx = .94, rely = .01, relwidth = .03, relheight = .02)
         exitButton.place(relx = .975, rely = .01, relwidth = .02, relheight = .02)
 
-#Program entry point and main loop         
+    def loadResults(mainWin):
+        results = backend.getResults()
+        #print(mainWin.children['!resultpage'].children[])
+        print(root.frames['ResultPage'].children['!frame2'])
+        for idx, item in enumerate(results['items']):
+            track = item['track']
+            tempLabel = tk.Label(root.frames['ResultPage'].children['!frame2'],
+             text = str(idx + 1) + " " + track['artists'][0]['name'] + " " + track['name'], bg = '#5ACC72')
+            tempLabel.grid(row = idx, column = 4)
+
+#Program entry point and main loop
 root = MusicApp()
-def main(): 
+def main():
     root.mainloop()
 
 if __name__ == "__main__": main()
