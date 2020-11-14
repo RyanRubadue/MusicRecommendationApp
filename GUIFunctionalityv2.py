@@ -114,9 +114,9 @@ class StartPage(tk.Frame):
         usernameEntry = tk.Entry(topFrame, bg = 'white', fg = '#5ACC72', font =('Segoe UI', 28), width = 25)
         usernameEntry.grid(row = 2, column = 1, sticky = 'w', pady = 10)
 
-        self.musicNoteImage = tk.PhotoImage(file = r'musicNoteImage.png')
-        musicLabel = tk.Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
-        musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (20, 0), padx = 20)
+        #self.musicNoteImage = tk.PhotoImage(file = r'musicNoteImage.png')
+        #musicLabel = tk.Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
+        #musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (20, 0), padx = 20)
         #add top level frame to page
         topFrame.grid(row = 0, column = 0)
 
@@ -163,7 +163,8 @@ class StartPage(tk.Frame):
 
             #Transition to results page and hide the error message in case the user previously entered bad input
             if isValid:
-                ResultPage.loadResults(parent)
+                backend.getTopTracks()
+                backend.getTopArtists()
                 controller.show_frame("ResultPage")
                 errorText.grid_forget()
 
@@ -222,15 +223,18 @@ class ResultPage(tk.Frame):
         fullScreenButton.place(relx = .94, rely = .01, relwidth = .03, relheight = .02)
         exitButton.place(relx = .975, rely = .01, relwidth = .02, relheight = .02)
 
-    def loadResults(mainWin):
-        results = backend.getResults()
-        #print(mainWin.children['!resultpage'].children[])
-        print(root.frames['ResultPage'].children['!frame2'])
-        for idx, item in enumerate(results['items']):
-            track = item['track']
-            tempLabel = tk.Label(root.frames['ResultPage'].children['!frame2'],
-             text = str(idx + 1) + " " + track['artists'][0]['name'] + " " + track['name'], bg = '#5ACC72')
-            tempLabel.grid(row = idx, column = 4)
+    def loadResults(results, frameNum):
+        frameName = '!frame' + str(frameNum)
+        i = 0
+        j = 0
+        for item in results:
+            tempLabel = tk.Label(root.frames['ResultPage'].children[frameName],
+            text = item, font = ('Segoe UI', 14, 'bold'), bg = '#5ACC72')
+            tempLabel.grid(row = j, column = 4 + (i)//10, padx = 40, pady = 6)
+            i += 1
+            j += 1
+            if j > 9:
+                j = 0
 
 #Program entry point and main loop
 root = MusicApp()
