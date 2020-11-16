@@ -1,6 +1,6 @@
 #GUI
 - [X] Add functionality to save results to file
-- [ ] Set screen size when exiting out of full screen
+- [X] Set screen size when exiting out of full screen
 - [X] Function for username detection
   - [X] Hide error message after valid username is submitted
 - [X] Create display for results in respective frames
