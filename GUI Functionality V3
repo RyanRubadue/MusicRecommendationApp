@@ -2,6 +2,7 @@ from tkinter import filedialog
 import backend
 import tkinter as tk
 from tkinter import ttk
+#import winsound 
 
 ### Music Recommendation App - 2020
 ### Made by: Ryan Rubadue
@@ -70,7 +71,7 @@ class MusicApp(tk.Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-
+        
         #Create start and result pages and show the start page upon application launch
         self.frames = {}
         for f in (StartPage, ResultPage):
@@ -90,6 +91,7 @@ class MusicApp(tk.Tk):
 #Contains all initialization and fucntionalities of the start page the user initially sees upon launching application.
 #Inherits from tk.Frame class
 class StartPage(tk.Frame):
+    
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
@@ -98,6 +100,7 @@ class StartPage(tk.Frame):
         #Variable Defintions
         checkVar3 = tk.IntVar() #Variable of whether show recommended songs is checked
         checkVar4 = tk.IntVar() #Variable of whether show recommended artists is checked
+        timelength = tk.StringVar() #Variable of the timelength to get user data for
 
         #Define and set a frame for the background to display a desired background color across the entire page behind all other widgets
         bgFrame = tk.Frame(self, bg = '#226333')
@@ -112,6 +115,8 @@ class StartPage(tk.Frame):
         leftFrame = tk.Frame(bgFrame, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=4)
         topFrame = tk.Frame(leftFrame, bg = '#5ACC72')
         bottomFrame = tk.Frame(leftFrame, bg = '#52F059', highlightbackground="#383F38", highlightthickness=2)
+
+
 
         #Definition of topFrame elements
         titleLabel = tk.Label(topFrame, text = "A New Way to Discover Music",
@@ -134,33 +139,39 @@ class StartPage(tk.Frame):
         #add top level frame to page
         topFrame.grid(row = 0, column = 0)
 
+
+
         #Definition of bottomFrame elements
         numSongsEntry = IntEntry(bottomFrame, bg = '#E9F0EA', fg = 'black', state = tk.DISABLED, width = 8)
-        numSongsLabel = tk.Label(bottomFrame, text = "= Number of Recommended Songs (1-10)", bg = "#52F059", font = ('Segoe UI', 18))
+        numSongsLabel = tk.Label(bottomFrame, text = "= Number of Recommended Songs (1-10)", bg = "#52F059", font = ('Segoe UI', 16))
         numArtistsEntry = IntEntry(bottomFrame, bg = '#E9F0EA', fg = 'black', state = tk.DISABLED, width = 8)
-        numArtistsLabel = tk.Label(bottomFrame, text = "= Number of Recommended Artists (1-10)", bg = "#52F059", font = ('Segoe UI', 18))
+        numArtistsLabel = tk.Label(bottomFrame, text = "= Number of Recommended Artists (1-10)", bg = "#52F059", font = ('Segoe UI', 16))
 
-        toDisplayCheckButton1 = tk.Checkbutton( bottomFrame, text = "Show Top Genres", bg = "#52F059", font = ('Segoe UI', 18))
-        toDisplayCheckButton2 = tk.Checkbutton( bottomFrame, text = "Show Top Artists", bg = "#52F059", font = ('Segoe UI', 18))
-        toDisplayCheckButton3 = tk.Checkbutton( bottomFrame, text = "Show Recommended Songs", bg = "#52F059", variable = checkVar3,
+        userTimeLength = tk.Label(bottomFrame, text = "Select timelength of user information:", bg = "#52F059", font = ('Segoe UI', 18))
+        shortTermButton = tk.Radiobutton(bottomFrame, text = "Short Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'short')
+        mediumTermButton = tk.Radiobutton(bottomFrame, text = "Medium Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'medium')
+        longTermButton = tk.Radiobutton(bottomFrame, text = "Long Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'long')
+        
+        toDisplayCheckButton1 = tk.Checkbutton( bottomFrame, text = "Show Recommended Songs", bg = "#52F059", variable = checkVar3,
                                                 command =lambda e=numSongsEntry: mainPageFunctions.unlockSongs(e, checkVar3), font = ('Segoe UI', 18))
-        toDisplayCheckButton4 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4,
+        toDisplayCheckButton2 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4,
                                                 command =lambda e=numArtistsEntry: mainPageFunctions.unlockSongs(e, checkVar4), font = ('Segoe UI', 18))
 
         #When clicked the start button checks that the user has entered a valid username and either display an error message or changes to the result page appropriately.
         startButton = tk.Button(bottomFrame, text = "Get Your Music!", font = ('Segoi UI', 48, 'bold'),
                              fg = '#75F993', bg = '#383F38', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: validateUsername(usernameEntry.get(), validUsernameText))
 
+        userTimeLength.grid(row = 0, column = 0, padx = 30, pady = (40, 0), columnspan = 2, sticky = 'w')
+        shortTermButton.grid(row = 1, column = 1, sticky = 'w')
+        mediumTermButton.grid(row = 2, column = 1, sticky = 'w', columnspan = 2)
+        longTermButton.grid(row = 3, column = 1, sticky = 'w', columnspan = 2)
+        toDisplayCheckButton1.grid(row = 4, column = 0, sticky = 'w', padx = 30, columnspan = 2)
+        toDisplayCheckButton2.grid(row = 6, column = 0, sticky = 'w', padx = 30, columnspan = 2)
 
-        toDisplayCheckButton1.grid(row = 0, column = 0, sticky = 'w', padx = 30, pady = (40, 0), columnspan = 2)
-        toDisplayCheckButton2.grid(row = 1, column = 0, sticky = 'w', padx = 30, columnspan = 2)
-        toDisplayCheckButton3.grid(row = 2, column = 0, sticky = 'w', padx = 30, columnspan = 2)
-        toDisplayCheckButton4.grid(row = 4, column = 0, sticky = 'w', padx = 30, columnspan = 2)
-
-        numSongsEntry.grid(row = 3, column = 0, padx = (100,0))
-        numSongsLabel.grid(row = 3, column = 1, padx = 0, sticky = 'w')
-        numArtistsEntry.grid(row = 5, column = 0, padx = (100,0))
-        numArtistsLabel.grid(row = 5, column = 1, padx = 0, sticky = 'w')
+        numSongsEntry.grid(row = 5, column = 0, padx = (100,0))
+        numSongsLabel.grid(row = 5, column = 1, padx = 0, sticky = 'w')
+        numArtistsEntry.grid(row = 7, column = 0, padx = (100,0))
+        numArtistsLabel.grid(row = 7, column = 1, padx = 0, sticky = 'w')
 
         fullScreenButton.place(relx = .94, rely = .01, relwidth = .03, relheight = .02)
         exitButton.place(relx = .975, rely = .01, relwidth = .02, relheight = .02)
@@ -168,7 +179,7 @@ class StartPage(tk.Frame):
         #add bottomFrame to page
         bottomFrame.grid(row = 1, column =0, pady  = (40, 60), ipadx = 60, ipady = 60, padx = 40)
         #add leftFrame to page
-        leftFrame.pack(expand = True)
+        leftFrame.pack(expand = True, pady = (40,20))
 
         #Checks that the user inputted a valid username to the program. Takes in the user input and an error text widget to display in the case of invalid input.
         def validateUsername(username, errorText):
@@ -200,7 +211,7 @@ class ResultPage(tk.Frame):
 
         #bgFrame is the background for the whole page and displays an appropriate background color.
         bgFrame = tk.Frame(self, bg = '#226333')
-
+        
         #these four frames are children of the background frame and display categories of results found
         nwFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
         neFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
@@ -256,7 +267,11 @@ class ResultPage(tk.Frame):
 
 #Program entry point and main loop
 root = MusicApp()
+root.iconbitmap(default='icon.ico')
+
 def main():
     root.mainloop()
 
 if __name__ == "__main__": main()
+
+
