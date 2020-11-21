@@ -2,7 +2,7 @@ from tkinter import filedialog
 import backend
 import tkinter as tk
 from tkinter import ttk
-#import winsound 
+#import winsound
 
 ### Music Recommendation App - 2020
 ### Made by: Ryan Rubadue
@@ -17,19 +17,25 @@ class mainPageFunctions:
         else:
             entry.configure(state='normal')
 
+    #saves the retrieved results to a text file at a user-specified directory
     def exportToFile():
         f = filedialog.asksaveasfile(mode='w', defaultextension=".txt")
         if f is None:
             return
-        #####textToSave = ResultPage.resultData
-        textToSave = {'Songs': ['1: favSong', '2: second fav song', '3: third fav song'], 'Artists': ['1: favArtist', '2: second fav Artist', '3: third fav Artist']}
+        textToSave = ResultPage.resultData
         for key in textToSave:
             f.write(key + "\n")
             for val in textToSave[key]:
-                f.write("\t" + val + "\n")
+                try:
+                    #print(val + "\n")
+                    f.write("\t" + val + "\n")
+                except:
+                    print("Entry cannot be printed\n")
+                    f.write("\tEntry cannot be printed\n")
             f.write("\n\n")
         f.close()
 
+    #Toggles fullscreen off/on for main application window 
     def toggleFullScreen():
         root.attributes("-fullscreen", not root.attributes('-fullscreen'))
         if root.attributes("-fullscreen") == False :
@@ -71,7 +77,7 @@ class MusicApp(tk.Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        
+
         #Create start and result pages and show the start page upon application launch
         self.frames = {}
         for f in (StartPage, ResultPage):
@@ -91,7 +97,7 @@ class MusicApp(tk.Tk):
 #Contains all initialization and fucntionalities of the start page the user initially sees upon launching application.
 #Inherits from tk.Frame class
 class StartPage(tk.Frame):
-    
+
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
@@ -151,7 +157,7 @@ class StartPage(tk.Frame):
         shortTermButton = tk.Radiobutton(bottomFrame, text = "Short Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'short')
         mediumTermButton = tk.Radiobutton(bottomFrame, text = "Medium Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'medium')
         longTermButton = tk.Radiobutton(bottomFrame, text = "Long Term", bg = "#52F059", font = ('Segoe UI', 16), variable = timelength, value = 'long')
-        
+
         toDisplayCheckButton1 = tk.Checkbutton( bottomFrame, text = "Show Recommended Songs", bg = "#52F059", variable = checkVar3,
                                                 command =lambda e=numSongsEntry: mainPageFunctions.unlockSongs(e, checkVar3), font = ('Segoe UI', 18))
         toDisplayCheckButton2 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4,
@@ -188,8 +194,8 @@ class StartPage(tk.Frame):
 
             #Transition to results page and hide the error message in case the user previously entered bad input
             if isValid:
-                #backend.getTopTracks()
-                #backend.getTopArtists()
+                ResultPage.loadResults(backend.getTopArtists(), 2, 'Top User Artists')
+                ResultPage.loadResults(backend.getTopTracks(), 3, 'Top User Tracks')
                 controller.show_frame("ResultPage")
                 errorText.grid_forget()
 
@@ -204,14 +210,14 @@ class ResultPage(tk.Frame):
 
     #Dictionary of the user's top information and found information. Used for file writing if user presses 'export results' button.
     resultData = {}
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
         #bgFrame is the background for the whole page and displays an appropriate background color.
         bgFrame = tk.Frame(self, bg = '#226333')
-        
+
         #these four frames are children of the background frame and display categories of results found
         nwFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
         neFrame = tk.Frame(self, bg = '#5ACC72', highlightbackground="#383F38", highlightthickness=2)
@@ -251,14 +257,14 @@ class ResultPage(tk.Frame):
         fullScreenButton.place(relx = .94, rely = .01, relwidth = .03, relheight = .02)
         exitButton.place(relx = .975, rely = .01, relwidth = .02, relheight = .02)
 
-    def loadResults(results, frameNum):
-        resultData['Names'] = results
+    def loadResults(results, frameNum, resultDataKey):
+        ResultPage.resultData[resultDataKey] = results
         frameName = '!frame' + str(frameNum)
         i = 0
         j = 0
         for item in results:
             tempLabel = tk.Label(root.frames['ResultPage'].children[frameName],
-            text = item, font = ('Segoe UI', 14, 'bold'), bg = '#5ACC72')
+            text = item, font = ('Calibri', 16, 'bold'), bg = '#5ACC72', fg = "#383F38")
             tempLabel.grid(row = j, column = 4 + (i)//10, padx = 40, pady = 6)
             i += 1
             j += 1
@@ -273,5 +279,3 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__": main()
-
-
