@@ -21,8 +21,7 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 #    print(idx,  , " – ", track['name'])
 
 def validateEntry(username):
-    print(len(str(username)))
-    return len(str(username)) > 5
+    return len(str(username)) > 0
 
 def getTextToSave():
     return "Hello this is a test :)"

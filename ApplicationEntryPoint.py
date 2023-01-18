@@ -190,7 +190,8 @@ class StartPage(tk.Frame):
         #Checks that the user inputted a valid username to the program. Takes in the user input and an error text widget to display in the case of invalid input.
         def validateUsername(username, errorText):
             #Check validity in backend module
-            isValid = backend.validateEntry(username)
+            isValid = True
+            #backend.validateEntry(username)
 
             #Transition to results page and hide the error message in case the user previously entered bad input
             if isValid:

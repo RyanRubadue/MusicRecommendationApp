@@ -26,7 +26,8 @@ class IntEntry(Entry):
         else:
             # there's non-digit characters in the input; reject this 
             self.set(self.old_value)
-            
+
+
 class Feedback:
 
     def __init__(self, master):
@@ -61,7 +62,7 @@ class Feedback:
         usernameEntry = Entry(topFrame, bg = 'white', fg = '#5ACC72', font =('Segoe UI', 14), width = 22)
         usernameEntry.grid(row = 2, column = 1, sticky = 'w', pady = 5)
 
-        self.musicNoteImage = PhotoImage(file = r'C:\Users\M38853\Downloads\try1.png').subsample(2, 2)
+        self.musicNoteImage = PhotoImage(file = 'musicNoteImage.png').subsample(2, 2)
         musicLabel = Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
         musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (10, 0), padx = 10)
 
@@ -100,12 +101,11 @@ class Feedback:
 
         leftFrame.pack(padx = 20, pady = 20)
 
-        
-
 def main():
     root = Tk()
     feedback = Feedback(root)
     root.mainloop()
+
 
 if __name__ == "__main__": main()
 

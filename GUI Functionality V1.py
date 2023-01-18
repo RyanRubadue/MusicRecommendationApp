@@ -89,7 +89,7 @@ class StartPage(tk.Frame):
         usernameEntry = tk.Entry(topFrame, bg = 'white', fg = '#5ACC72', font =('Segoe UI', 28), width = 25)
         usernameEntry.grid(row = 2, column = 1, sticky = 'w', pady = 10)
 
-        self.musicNoteImage = tk.PhotoImage(file = r'C:\Users\M38853\Downloads\try1.png')
+        self.musicNoteImage = tk.PhotoImage(file = r'musicNoteImage.png')
         musicLabel = tk.Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
         musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (20, 0), padx = 20)
 

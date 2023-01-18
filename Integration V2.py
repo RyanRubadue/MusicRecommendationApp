@@ -87,7 +87,7 @@ class StartPage(tk.Frame):
         usernameEntry = tk.Entry(topFrame, bg = 'white', fg = '#5ACC72', font =('Segoe UI', 14), width = 22)
         usernameEntry.grid(row = 2, column = 1, sticky = 'w', pady = 5)
 
-        self.musicNoteImage = tk.PhotoImage(file = r'C:\Users\M38853\Downloads\try1.png').subsample(2, 2)
+        self.musicNoteImage = tk.PhotoImage(file = r'musicNoteImage.png').subsample(2, 2)
         musicLabel = tk.Label(topFrame, image = self.musicNoteImage, bg = '#5ACC72')
         musicLabel.grid(row = 0, column = 3, rowspan = 4, pady = (10, 0), padx = 10)
 
@@ -107,7 +107,7 @@ class StartPage(tk.Frame):
         toDisplayCheckButton4 = tk.Checkbutton( bottomFrame, text = "Show Recommended Artists", bg = "#52F059", variable = checkVar4, command =lambda e=numArtistsEntry: mainPageFunctions.unlockSongs(e, checkVar4))
 
         startButton = tk.Button(bottomFrame, text = "Get Your Music!", font = ('Segoi UI', 24, 'bold'),
-                             fg = 'white', bg = '#3BAD40', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: ResultPage.loadResults())
+                             fg = 'white', bg = '#3BAD40', relief = tk.RIDGE, activeforeground = '#5ACC72', command =lambda: ResultPage.loadResults(ResultPage(parent, controller)))
 
 
         toDisplayCheckButton1.grid(row = 0, column = 0, sticky = 'w', padx = 15, pady = (20, 0), columnspan = 2)
@@ -162,13 +162,14 @@ class ResultPage(tk.Frame):
         returnButton.place(relx = .735, rely = .03, relheight = .05, relwidth = .1)
         exportButton.place(relx = .85, rely = .03, relheight = .05, relwidth = .1)
 
-    def loadResults():
-        resultList =
-        for idx, result in enumerate(resultList['items']):
-            track = item['track']
-            tempLabel = tk.Label(nwFrame, text = str(idx) + " " + track['artists'][0]['name'] + " " + track['name'])
-            tempLabel.grid(row = idx, column = 0, columnSpan = 4)
-        controller.show_frame("ResultPage")
+    def loadResults(self):
+        pass
+        # resultList = []
+        # for idx, result in enumerate(resultList['items']):
+        #     track = item['track']
+        #     tempLabel = tk.Label(nwFrame, text = str(idx) + " " + track['artists'][0]['name'] + " " + track['name'])
+        #     tempLabel.grid(row = idx, column = 0, columnSpan = 4)
+        # controller.show_frame("ResultPage")
 
 def main():
     root = MusicApp()
